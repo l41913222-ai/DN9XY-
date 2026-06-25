@@ -1,33 +1,40 @@
-# ESP8266 Amateur Radio UTC Clock (MAX7219)
+# DN9XY Matrix Station (8-Module Edition)
 
-This project realizes a compact, precise station clock designed for amateur radio shacks. It is powered by an **ESP8266 (NodeMCU / ESP8285)** and a **MAX7219 8x32 LED matrix display**. The clock displays the exact **UTC time** and a customizable **amateur radio callsign**.
+This project is a versatile LED Matrix controller designed for amateur radio stations, powered by an **ESP-12F** and an **8x 8x8 MAX7219 LED matrix** chain. It provides a user-friendly web interface to manage your station data.
 
 ## Features
-* **Access Point Configuration:** No hardcoded Wi-Fi credentials in the source code! On the first boot (or if no network is found), the ESP8266 hosts its own Wi-Fi Access Point (Captive Portal). You can easily configure your local Wi-Fi via your smartphone or PC.
-* **UTC Time Display:** Tailored specifically for amateur radio operations, displaying Coordinated Universal Time (UTC) without automatic daylight saving time shifts.
-* **Callsign Integration:** Displays your personal amateur radio callsign alongside or alternating with the time.
-* **NTP Synchronization:** Automatically fetches the exact time from the internet via Network Time Protocol, making it maintenance-free and highly accurate.
+- **Web Interface:** Easily configure your Callsign, Locator, and Custom text via a web browser.
+- **Multiple Display Modes:** - Time only (UTC/CEST toggle).
+  - Callsign & Locator.
+  - Custom text.
+  - Automatic cycle mode (rotating through all).
+- **Time Synchronization:** Simple one-click synchronization with your smartphone time.
+- **Access Point Mode:** No router needed; the device creates its own Wi-Fi network.
 
-## Hardware Wiring
+## Hardware Setup
+- **Microcontroller:** ESP-12F (or ESP8266 DevKit v1).
+- **Display:** 8x 8x8 LED Matrix modules (MAX7219) connected in a chain.
 
-Connect the MAX7219 matrix display to your ESP8266 using the following hardware SPI pins:
+### Wiring
+| Matrix Pin | ESP-12F Pin |
+| :--- | :--- |
+| **DIN** | D7 (GPIO 13) |
+| **CS** | D8 (GPIO 15) |
+| **CLK** | D5 (GPIO 14) |
 
-| MAX7219 Pin | ESP8266 Pin | Description |
-| :--- | :--- | :--- |
-| **VCC** | 5V (VIN) | Power Supply |
-| **GND** | GND | Ground |
-| **DIN** | D7 (GPIO13) | Data Input (Hardware MOSI) |
-| **CLK** | D5 (GPIO14) | Clock Line (Hardware SCK) |
-| **CS** | D8 (GPIO15) | Chip Select |
+> **Important:** Always use an external 5V power supply for the LED matrix chain to avoid damaging the ESP-12F. Connect the GND of the power supply to the GND of the ESP-12F (Common Ground).
 
-## Required Libraries (Arduino IDE)
-To compile this project, make sure to install the following libraries via the Library Manager:
-* `MD_Parola` & `MD_MAX72XX` (Display control)
-* `WiFiManager` (For the captive portal Wi-Fi configuration)
+## Build Guide
+1. **Connect the Matrices:** Connect all 8 modules in series using the ribbon cables. Ensure the arrows on the back point in the same direction (signal flow from DIN to DOUT).
+2. **Connect the ESP:** Follow the wiring table above.
+3. **Power:** Feed 5V to the matrix chain and ensure a common ground with the ESP.
+4. **Flash:** Upload the provided code using the Arduino IDE (ensure `MD_Parola` and `MD_MAX72xx` libraries are installed).
 
-## Installation & Setup
-1. Upload the code to your ESP8266 board.
-2. Once booted, connect to the Wi-Fi network hosted by the ESP8266 (e.g., `ESP8266-Clock-Setup`).
-3. A configuration page should open automatically in your browser.
-4. Select your home Wi-Fi network, enter your password, and save.
-5. The clock will restart, connect to your network, sync via NTP, and start displaying the UTC time and your callsign.
+## Usage
+1. **Connect:** Search for the Wi-Fi network **"DN9XY_MATRIX"** (Password: `12345678`).
+2. **Configure:** Open `http://192.168.4.1` in your browser.
+3. **Sync:** Click the "Sync Handyzeit" button to synchronize the clock with your local device time.
+
+## Troubleshooting
+* **Mirrored/Scrambled Text:** Change `#define HARDWARE_TYPE` in the code from `FC16_HW` to `GENERIC_HW`.
+* **Mirrored horizontally:** Uncomment `P.setZoneEffect(0, true, PA_FLIP_LR);` in the `setup()` function.
