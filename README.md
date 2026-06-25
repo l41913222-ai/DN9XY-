@@ -1,4 +1,4 @@
-# DN9XY Matrix Station (8-Module Edition)
+# DN9XY Matrix clock Hamradio edition (8-Module Edition)
 
 This project is a versatile LED Matrix controller designed for amateur radio stations, powered by an **ESP-12F** and an **8x 8x8 MAX7219 LED matrix** chain. It provides a user-friendly web interface to manage your station data.
 
