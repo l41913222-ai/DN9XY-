@@ -1,0 +1,26 @@
+# Assembly Guide: Standard Edition
+## 1. Bill of Materials (BOM)
+* **Microcontroller:** 1x ESP8266 (e.g., NodeMCU V3)
+* **Display:** 2x LED Matrix Modules (4-in-1, total 8 segments)
+* **Power Supply:** 1x 5V / 2A Power Adapter
+* **Wiring:** Jumper Wires (Female-to-Female)
+## 2. Wiring Diagram
+
+| Matrix Pin | ESP8266 Pin |
+| :--- | :--- |
+| **VCC** | 5V (External PSU) |
+| **GND** | GND (Common Ground) |
+| **DIN** | D7 (GPIO 13) |
+| **CS** | D8 (GPIO 15) |
+| **CLK** | D5 (GPIO 14) |
+
+## 3. Step-by-Step Assembly
+1. **Daisy-Chain:** Connect the two 4-in-1 modules via the provided bridge cables. Ensure arrows on the PCB point away from the ESP.
+2. **Power:** Connect the 5V power supply directly to the Matrix VCC/GND. Connect the GND of the power supply to the ESP GND (Common Ground).
+3. **Signal:** Connect the Matrix DIN, CS, and CLK pins to the ESP pins listed above.
+4. **Housing:** Mount into a frame and add translucent plexiglass for better diffusion.
+## 4. Setup & Troubleshooting
+* **Connect:** Upon power-up, search for the Wi-Fi "Black-Humor-Matrix".
+* **Portal:** Open `http://192.168.4.1` in your browser.
+* **Mirrored Text:** Add `P.setZoneEffect(0, true, PA_FLIP_LR);` in `setup()` if the text is mirrored.
+* **Stability:** Use an external 5V source for the matrix. Do not power 8 segments via the ESP 3.3V pin.
